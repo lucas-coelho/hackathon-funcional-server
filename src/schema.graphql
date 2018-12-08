@@ -1,5 +1,6 @@
 scalar GraphQLDateTime
 scalar GraphQLDate
+
 type Query {
   schedules: [Schedule!]
   schedule(id: ID!): Schedule

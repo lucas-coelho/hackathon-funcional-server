@@ -1,0 +1,15 @@
+type Schedule {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  employee: String!
+  beginDate: DateTime!
+  endDate: DateTime!
+  status: Status!
+}
+
+enum Status {
+  Pending,
+  Approved,
+  Reproved,
+}
