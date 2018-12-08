@@ -1,17 +1,20 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { find, merge, pick, pipe, propEq, when } = require('ramda');
-let links = require('./links.json');
+const { GraphQLDateTime, GraphQLDate } = require('graphql-iso-date');
+let schedules = require('./schedules.json');
 
 const idEq = propEq('id');
 const doIfMatchingId = (id) => when(idEq(id));
 
 const resolvers = {
+  GraphQLDateTime,
+  GraphQLDate,
   Query: {
-    links: () => links,
-    link: (root, { id }) => find(idEq(id), links)
+    schedules: () => schedules,
+    schedule: (root, { id }) => find(idEq(id), schedules)
   },
   Mutation: {
-    post: (root, args) => pipe(
+    createSchedule: (root, args) => pipe(
       pick(['url', 'description']),
       merge({ id: `link-${links.length}` }),
       (link) => {
@@ -21,7 +24,7 @@ const resolvers = {
         return link;
       }
     )(args),
-    updateLink: (root, args) => {
+    updateSchedule: (root, args) => {
       let newLink;
       const updateLink = (link) => {
         newLink = merge(link, args);
@@ -32,7 +35,7 @@ const resolvers = {
 
       return newLink;
     },
-    deleteLink: (root, { id }) => {
+    deleteSchedule: (root, { id }) => {
       let linkToDelete;
 
       links.forEach((link, index) => {
@@ -46,7 +49,7 @@ const resolvers = {
 
       return linkToDelete;
     }
-  }
+  },
 };
 
 const server = new GraphQLServer({
@@ -54,4 +57,4 @@ const server = new GraphQLServer({
   resolvers
 });
 
-server.start(() => console.log('Running on port 4000'))
+server.start(() => console.log('Running on port 4000'));

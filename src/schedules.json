@@ -1,0 +1,46 @@
+[
+   {
+      "id": 1,
+      "employee": "Lucas Botelho Coelho",
+      "beginDate": "2019-01-06",
+      "endDate": "2019-01-21",
+      "status": "Pending",
+      "createdAt": "2018-12-06T21:57:43.837Z",
+      "updatedAt": "2018-12-06T21:57:43.837Z"
+   },
+   {
+      "id": 2,
+      "employee": "Marcelo Risse",
+      "beginDate": "2019-02-06",
+      "endDate": "2019-02-21",
+      "status": "Pending",
+      "createdAt": "2018-12-07T21:57:43.837Z",
+      "updatedAt": "2018-12-07T21:57:43.837Z"
+   },
+   {
+      "id": 3,
+      "employee": "Roni Castro",
+      "beginDate": "2019-04-06",
+      "endDate": "2019-04-10",
+      "status": "Approved",
+      "createdAt": "2018-11-10T21:57:43.837Z",
+      "updatedAt": "2018-11-10T21:57:43.837Z"
+   },
+   {
+      "id": 3,
+      "employee": "Bruno Saito",
+      "beginDate": "2019-06-10",
+      "endDate": "2019-06-20",
+      "status": "Approved",
+      "createdAt": "2018-11-11T21:57:43.837Z",
+      "updatedAt": "2018-11-11T21:57:43.837Z"
+   },{
+      "id": 4,
+      "employee": "Lucas Botelho Coelho",
+      "beginDate": "2018-12-21",
+      "endDate": "2019-01-10",
+      "status": "Reproved",
+      "createdAt": "2018-10-06T21:57:43.837Z",
+      "updatedAt": "2018-10-06T21:57:43.837Z"
+   }
+]

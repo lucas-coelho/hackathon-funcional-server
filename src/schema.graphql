@@ -1,35 +1,28 @@
+scalar GraphQLDateTime
+scalar GraphQLDate
 type Query {
-  links: [Link!]
-  link(id: ID!): Link
+  schedules: [Schedule!]
+  schedule(id: ID!): Schedule
 }
 
 type Mutation {
-  post(url: String!, description: String!): Link!
-  updateLink(id: ID!, url: String, description: String): Link
-  deleteLink(id: ID!): Link
+  createSchedule(employee: String!, beginDate: GraphQLDate!, endDate: GraphQLDate!): Schedule!
+  updateSchedule(id: ID!, employee: String, beginDate: GraphQLDate, endDate: GraphQLDate): Schedule!
+  deleteSchedule(id: ID!): Boolean!
 }
 
-type Link {
+type Schedule {
   id: ID!
-  description: String!
-  url: String!
+  employee: String!
+  beginDate: GraphQLDate!
+  endDate: GraphQLDate!
+  status: Status!
+  createdAt: GraphQLDateTime!
+  updatedAt: GraphQLDateTime!
 }
 
-
-
-# type Query {
-#   info: String!
-#   feed: [Link!]
-#   link(id: ID!): Link
-# }
-#
-# type Mutation {
-#   post(url: String!, description: String!): Link!
-#   updateLink(id: ID!, description: String, url: String): Link
-# }
-#
-# type Link {
-#   id: ID!
-#   description: String!
-#   url: String!
-# }
+enum Status {
+  Pending,
+  Approved,
+  Reproved,
+}
