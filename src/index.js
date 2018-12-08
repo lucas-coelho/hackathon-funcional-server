@@ -2,6 +2,7 @@ const { GraphQLServer } = require('graphql-yoga');
 const { find, merge, pick, pipe, propEq, when } = require('ramda');
 const { GraphQLDateTime, GraphQLDate } = require('graphql-iso-date');
 let schedules = require('./schedules.json');
+const { prisma } = require('./generated/prisma-client');
 
 const idEq = propEq('id');
 const doIfMatchingId = (id) => when(idEq(id));
@@ -10,7 +11,7 @@ const resolvers = {
   GraphQLDateTime,
   GraphQLDate,
   Query: {
-    schedules: () => schedules,
+    schedules: () => prisma.schedules(),
     schedule: (root, { id }) => find(idEq(id), schedules)
   },
   Mutation: {
