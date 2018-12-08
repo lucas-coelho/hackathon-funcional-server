@@ -9,7 +9,7 @@ type Schedule {
 }
 
 enum Status {
-  Pending,
   Approved,
-  Reproved,
+  Pending,
+  Rejected,
 }

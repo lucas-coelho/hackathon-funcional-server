@@ -2,7 +2,7 @@ scalar GraphQLDateTime
 scalar GraphQLDate
 
 type Query {
-  schedules: [Schedule!]
+  schedules(status: Status): [Schedule!]
   schedule(id: ID!): Schedule
 }
 
@@ -23,7 +23,7 @@ type Schedule {
 }
 
 enum Status {
-  Pending,
   Approved,
-  Reproved,
+  Pending,
+  Rejected,
 }

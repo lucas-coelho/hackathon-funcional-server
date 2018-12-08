@@ -1,56 +1,37 @@
 const { GraphQLServer } = require('graphql-yoga');
-const { find, merge, pick, pipe, propEq, when } = require('ramda');
+const { pipe, flatten, isNil, not } = require('ramda');
 const { GraphQLDateTime, GraphQLDate } = require('graphql-iso-date');
-let schedules = require('./schedules.json');
 const { prisma } = require('./generated/prisma-client');
+const { mapSchedule, mapSchedules, mapCreateScheduleInput, mapUpdateScheduleInput } = require('./schedule.mapper')
 
-const idEq = propEq('id');
-const doIfMatchingId = (id) => when(idEq(id));
+const program = (...list) => acc => flatten(list).reduce( (acc,fn) => acc.then(fn), Promise.resolve(acc));
 
 const resolvers = {
   GraphQLDateTime,
   GraphQLDate,
   Query: {
-    schedules: () => prisma.schedules(),
-    schedule: (root, { id }) => find(idEq(id), schedules)
+    schedules: (root, {status}) => pipe(
+      prisma.schedules,
+      program(mapSchedules),
+    )({where: {status}}),
+    schedule: (root, {id}) => prisma.schedule({id})
   },
   Mutation: {
     createSchedule: (root, args) => pipe(
-      pick(['url', 'description']),
-      merge({ id: `link-${links.length}` }),
-      (link) => {
-        // OMG side-effect! O_o"
-        links.push(link);
-
-        return link;
-      }
+      mapCreateScheduleInput,
+      prisma.createSchedule,
+      program(mapSchedule),
     )(args),
-    updateSchedule: (root, args) => {
-      let newLink;
-      const updateLink = (link) => {
-        newLink = merge(link, args);
-        return newLink;
-      };
-
-      links = links.map(doIfMatchingId(args.id)(updateLink));
-
-      return newLink;
-    },
-    deleteSchedule: (root, { id }) => {
-      let linkToDelete;
-
-      links.forEach((link, index) => {
-        const matchAndRemove = (match) => {
-          linkToDelete = match;
-          links.splice(index, 1);
-        };
-
-        return doIfMatchingId(id)(matchAndRemove, link);
-      });
-
-      return linkToDelete;
-    }
-  },
+    updateSchedule: (root, args) => pipe(
+      mapUpdateScheduleInput,
+      prisma.updateSchedule,
+      program(mapSchedule),
+    )(args),
+    deleteSchedule: (root, arg) => pipe(
+      prisma.deleteSchedule,
+      program(pipe(isNil, not))
+    )(arg)
+  }
 };
 
 const server = new GraphQLServer({
